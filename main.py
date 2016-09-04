@@ -1,7 +1,6 @@
 __author__ = 'uddipaan'
 
-#from SparseCount import *
-#from sat import sat
+
 from extra import median 
 
 #Usage
@@ -20,12 +19,12 @@ if __name__ == '__main__':
     
     ln = math.log
     sqrt = math.sqrt
-    ceil = math.ceil
+    ceiling = math.ceil
     delta = 1 - min_conf
     Q = (((ln(1/delta))/alpha)*ln(n))
-    T = ceil(Q)
+    T = ceiling(Q)
     
-    w = [[0 for x in range(n)] for y in range(T)]
+    w = [ for x in range(T)]
     
     i=0
     while (i <= n) :
@@ -34,13 +33,12 @@ if __name__ == '__main__':
             #hashing to be done
             #find S(h)= size of x for which h(x)=0, hash is 0
 
-            #the indicator function is applied below
             if sh > = 1:           
-                w[i][t] = 1
+                w[t] = 1
             else
-                w[i][t] = 0
+                w[t] = 0
 
-        med=median(i, t, w)
+        med = median(w)
         if med < 1:
             break
         i=i+1
