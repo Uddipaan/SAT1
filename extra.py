@@ -1,8 +1,14 @@
 __author__ = 'uddipaan'
+'''Some parts taken from sparse counts original code written by Shengjia'''
+
+'''REVISIONS!!!'''
+
+# test cnf file generated during solver is need to be made dynamic named.
+# not quite sure if instance_id is needed or any time is needed
 
 
 import random
-
+import os
 
 
 class SAT:
@@ -32,23 +38,10 @@ class SAT:
 
 
 
-def median(self, w):
-    srt = sorted(w)
-    print (srt)
-    self.leng = len(srt)
-    if not self.leng % 2:
-        return int((srt[ self.leng // 2 ] + srt[ self.leng // 2 - 1]) // 2.0 )
-    return int(srt[ self.leng // 2 ] )
 
 
-
-
-
-
-
-
-def hashfnc_generate(self,m,f)
-    self.hashfnc = []
+    def hashfnc_generate(self,m,f)
+    self.hashfncs = []
     self.newVar = 0
 
     self.max_Xor = -1
@@ -70,10 +63,67 @@ def hashfnc_generate(self,m,f)
                         temp.append(cur_indx)
                         cur_indx += 1
                         self.newVar += 1
-                        self.hashfnc.append(temp)
-                self.hashfnc.append(newfnc)
+                        self.hashfncs.append(temp)
+                self.hashfncs.append(newfnc)
 
     print("Generated " + str(m) + "XOR constraints")
     if self.max_Xor > 0:
         print("Max Xor length is " + str(self.max_Xor) + ". Added " + str(self.newVar)+ "new variables!")
         
+
+
+
+
+
+
+
+    def solver(self)
+        os.mkdir("tmp")
+        filename = "tmp/SAT_test.cnf"    #SAT_test.cnf needs to be made dynamic
+        ofstream = open(filename, "w")
+        ofstream.write("p cnf " + str(self.n + self.newVar) + " " + str(len(self.clauses) + len(self.hashfnc)) + "\n")
+
+
+        for item in self.clauses:
+            ofstream.write(item + "\n")
+        for 1hashfnc in self.hashfncs:
+            ofstream.write("x")
+            for item in 1hashfnc:
+                ofstream.write(str(item) + " ")
+            ofstream.write("0\n")
+        ofstream.close()
+        solver = Command(['./cryptominisat', '--verbosity=0', '--gaussuntil=400', '--threads=1', filename])
+        result = solver.run()
+        run_command(['rm', filename])
+
+        result = result.split()
+        if len(result) >= 2:
+            outcome = result[1]
+            if outcome == 'SATISFIABLE':
+                return True
+            elif outcome == 'UNSATISFIABLE':
+                return False
+        
+
+
+
+
+
+
+
+def median(w):
+    srt = sorted(w)
+    print (srt)
+    leng = len(srt)
+    if not leng % 2:
+        return int((srt[ leng // 2 ] + srt[ leng // 2 - 1]) // 2.0 )   # // is used in newer versions of python
+    return int(srt[ leng // 2 ] )
+
+
+
+
+
+
+
+
+

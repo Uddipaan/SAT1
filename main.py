@@ -1,6 +1,16 @@
 __author__ = 'uddipaan'
 
 
+
+'''REVISIONS !!! '''
+# f value needs to be revised
+# alpha value is user input
+
+
+
+
+
+
 from extra import * 
 
 #Usage
@@ -45,7 +55,7 @@ if __name__ == '__main__':
             f=0.02 #just for now
             hashfnc_generate(m, f)  #hash functions generated
             
-            
+            outcome=solver()
             
             #find S(h)= size of x for which h(x)=0, hash is 0
 
