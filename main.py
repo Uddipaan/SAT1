@@ -7,9 +7,9 @@ __author__ = 'uddipaan'
 # alpha value is user input
 
 
-
-
-
+import math   #(for python less than or equal to version 2, use this import part)
+import sys
+import argparse
 
 from extra import * 
 
@@ -23,18 +23,27 @@ if __name__ == '__main__':
         print("Error. Quiting!!");
         exit(1);
 
-    prb_nme = sys.argv[1]
-    alpha = sys.argv[2]
-    min_conf = sys.argv[3]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-prb_nme",help="Name of the problem file")
+    parser.add_argument("-alpha",help="Alpha value",type=float)
+    parser.add_argument("-min_conf",help="Minimum Confidence",type=float)
+    args, unknown = parser.parse_known_args() #using parse_known_args rather than parse_args enables the use of ArgumentParser in code within the scope of if __name__ == 'main':
+
+    prb_nme = args.prb_nme
+    alpha = args.alpha
+    min_conf = args.min_conf
 
     prb = SAT(prb_nme)
 
+
+    ''' I dont see the below code's usefullness!! :-( 
     min_m = 0 #no. of  minimum parity constraints is 0
     if max_m < 0:
         max_m = prb.n #max no. of parity constraints is the no. of variables in the problem
+     Until here!! '''
 
 
-    
 
     
     ln = math.log
@@ -44,7 +53,7 @@ if __name__ == '__main__':
     Q = (((ln(1/delta))/alpha)*ln(prb.n))
     T = ceiling(Q)
     
-    w = [ for x in range(T)] #here w is initialized to the range of T
+    w = [] #here w is initialized to the range of T
     
     i=0
     while (i <= prb.n) :   
@@ -55,17 +64,18 @@ if __name__ == '__main__':
             f=0.02 #just for now
             hashfnc_generate(m, f)  #hash functions generated
             
-            outcome=solver()
-            
-            #find S(h)= size of x for which h(x)=0, hash is 0
+            outcome = solver()
 
-            if sh > = 1:           
+            sh = outcome  #simple assignment of one value to another variable
+
+            if sh == True:           
                 w.append(1)
-            else
+            else:
                 w.append(0)
 
         med = median(w)
         if med < 1:
             break
-        i=i+1
+    i=i+1
     result = math.pow(2,i-1)
+    print("The result is " + str(result))
