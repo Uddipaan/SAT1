@@ -11,7 +11,9 @@ import math   #(for python less than or equal to version 2, use this import part
 import sys
 import argparse
 
-from extra import * 
+from extra import *
+
+
 
 #Usage
 #parameter 1: Name of the problem file
@@ -25,11 +27,12 @@ if __name__ == '__main__':
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-prb_nme",help="Name of the problem file")
-    parser.add_argument("-alpha",help="Alpha value",type=float)
-    parser.add_argument("-min_conf",help="Minimum Confidence",type=float)
+    parser.add_argument(dest='prb_nme',help="Name of the problem file")
+    parser.add_argument(dest='alpha',help="Alpha value",type=float)
+    parser.add_argument(dest='min_conf',help="Minimum Confidence",type=float)
     args, unknown = parser.parse_known_args() #using parse_known_args rather than parse_args enables the use of ArgumentParser in code within the scope of if __name__ == 'main':
 
+   
     prb_nme = args.prb_nme
     alpha = args.alpha
     min_conf = args.min_conf
@@ -51,9 +54,9 @@ if __name__ == '__main__':
     ceiling = math.ceil
     delta = 1 - min_conf
     Q = (((ln(1/delta))/alpha)*ln(prb.n))
-    T = ceiling(Q)
+    T = int(ceiling(Q))
     
-    w = [] #here w is initialized to the range of T
+    w = []
     
     i=0
     while (i <= prb.n) :   
@@ -62,17 +65,18 @@ if __name__ == '__main__':
             
             m=i
             f=0.02 #just for now
-            hashfnc_generate(m, f)  #hash functions generated
+            prb.hashfnc_generate(m, f)  #hash functions generated
             
-            outcome = solver()
+            outcome = prb.solver()
 
             sh = outcome  #simple assignment of one value to another variable
-
-            if sh == True:           
-                w.append(1)
+            if sh != 0:
+                if sh == True:           
+                    w.append(1)
+                else:
+                    w.append(0)
             else:
-                w.append(0)
-
+                print("No results")
         med = median(w)
         if med < 1:
             break

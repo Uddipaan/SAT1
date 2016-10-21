@@ -6,9 +6,71 @@ __author__ = 'uddipaan'
 # test cnf file generated during solver is need to be made dynamic named.
 # not quite sure if instance_id is needed or any time is needed
 
-
+import subprocess, threading
 import random
 import os
+
+
+#to execute the run_command in solver
+def run_command(command):
+    p = subprocess.Popen(command,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT)
+    return [item.strip() for item in iter(p.stdout.readline, b'')]
+
+
+
+
+
+
+
+
+
+
+#to be used for solver where a command needs to be executed
+class Command(object):
+    def __init__(self, cmd):
+        self.cmd = cmd
+        self.process = None
+        self.process_lock = threading.Lock()
+        self.output = ""
+
+    def run(self):
+        
+        def target():
+            self.process_lock.acquire()
+            if self.process is None:
+                self.process = subprocess.Popen(self.cmd,
+                                                stdout=subprocess.PIPE,
+                                                stderr=subprocess.STDOUT)
+                self.process_lock.release()
+                self.output, err = self.process.communicate()
+            else:
+                self.process_lock.release()
+
+        thread = threading.Thread(target=target)
+        thread.start()
+        
+        if thread.is_alive():
+            self.process_lock.acquire()
+            if self.process is not None:
+                try:
+                    self.process.kill()
+                except:
+                    pass
+            self.process = False
+            self.process_lock.release()
+            thread.join()
+            return None
+        return self.output
+
+
+
+
+
+
+
+
 
 
 class SAT:
@@ -38,9 +100,11 @@ class SAT:
         print("There are " + str(self.n) + "variables and " + str(self.no_of_clauses) + "clauses")
 
 
-
+    
 
     def hashfnc_generate(self,m,f):
+
+        
         self.hashfncs = []
         self.newVar = 0
 
@@ -66,7 +130,7 @@ class SAT:
                             self.hashfncs.append(temp)
                     self.hashfncs.append(newfnc)
 
-        print("Generated " + str(m) + "XOR constraints")
+        print("Generated " + str(m) + " XOR constraints")
         if self.max_Xor > 0:
             print("Max Xor length is " + str(self.max_Xor) + ". Added " + str(self.newVar)+ "new variables!")
         
@@ -78,7 +142,10 @@ class SAT:
 
 
     def solver(self):
-        os.mkdir("tmp")
+
+        
+        if not os.path.isdir("tmp"):
+            os.mkdir("tmp")
         filename = "tmp/SAT_test.cnf"    #SAT_test.cnf needs to be made dynamic
         ofstream = open(filename, "w")
         ofstream.write("p cnf " + str(self.n + self.newVar) + " " + str(len(self.clauses) + len(self.hashfnc)) + "\n")
@@ -95,14 +162,16 @@ class SAT:
         solver = Command(['./cryptominisat', '--verbosity=0', '--gaussuntil=400', '--threads=1', filename])
         result = solver.run()
         run_command(['rm', filename])       #check
-
-        result = result.split()
-        if len(result) >= 2:
-            outcome = result[1]
-            if outcome == 'SATISFIABLE':
-                return True
-            elif outcome == 'UNSATISFIABLE':
-                return False
+        if not result:
+            return 0
+        else:
+            result = result.split()
+            if len(result) >= 2:
+                outcome = result[1]
+                if outcome == 'SATISFIABLE':
+                    return True
+                elif outcome == 'UNSATISFIABLE':
+                    return False
         
 
 
@@ -112,14 +181,17 @@ class SAT:
 
 
 def median(w):
-    srt = sorted(w)
-    print (srt)
-    leng = len(srt)
-    if not leng % 2:
-        return int((srt[ leng // 2 ] + srt[ leng // 2 - 1]) // 2.0 )   # // is used in newer versions of python
-    return int(srt[ leng // 2 ] )
 
-
+    if not w:    
+        return 0
+    else:
+        srt = sorted(w)
+        print (srt)
+        leng = len(srt)
+        if not leng % 2:
+            return int((srt[ leng / 2 ] + srt[ leng / 2 - 1]) / 2.0 )   # // is used in newer versions of python
+        return int(srt[ leng / 2 ] )
+        
 
 
 
