@@ -159,7 +159,7 @@ class SAT:
                 ofstream.write(str(item) + " ")
             ofstream.write("0\n")
         ofstream.close()
-        solver = Command(['./cryptominisat5', '--verb 0', filename]) #'--gaussuntil=400', '--threads=1',
+        solver = Command(['./cryptominisat5', '--verbosity=0', filename]) #'--gaussuntil=400', '--threads=1',
         result = solver.run()
         run_command(['rm', filename])       #check
         if not result:
