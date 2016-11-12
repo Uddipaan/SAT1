@@ -1,5 +1,5 @@
 __author__ = 'uddipaan'
-
+'''Some parts taken from sparse counts original code written by Shengjia'''
 
 '''REVISIONS!!!'''
 
@@ -90,9 +90,6 @@ class SAT:
                               #If this length is exceeded, xor will be broken up into separate clauses'''
         self.newVar = 0
 
-
-                    #NEED TO MAKE MECHANISM TO IGNORE 'C'->LEAST PRIORITY
-                    
         while True:
             curline = file_stream.readline()
             if not curline:
@@ -162,7 +159,7 @@ class SAT:
                 ofstream.write(str(item) + " ")
             ofstream.write("0\n")
         ofstream.close()
-        solver = Command(['./cryptominisat5', '--verb 0', filename]) #'--gaussuntil=400', '--threads=1',
+        solver = Command(['./cryptominisat5', '--verbosity=0', filename]) #'--gaussuntil=400', '--threads=1',
         result = solver.run()
         run_command(['rm', filename])       #check
         if not result:
