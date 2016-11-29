@@ -1,5 +1,5 @@
 __author__ = 'uddipaan'
-'''Some parts taken from sparse counts original code written by Shengjia'''
+
 
 '''REVISIONS!!!'''
 
@@ -90,6 +90,9 @@ class SAT:
                               #If this length is exceeded, xor will be broken up into separate clauses'''
         self.newVar = 0
 
+
+                    #NEED TO MAKE MECHANISM TO IGNORE 'C'->LEAST PRIORITY
+                    
         while True:
             curline = file_stream.readline()
             if not curline:
