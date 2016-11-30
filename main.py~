@@ -9,7 +9,7 @@ __author__ = 'uddipaan'
 
 import math   #(for python less than or equal to version 2, use this import part)
 import sys
-import argparse
+import argparse     #argparser is a library
 
 from extra import *
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         exit(1);
 
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser() #This is a constructor where ArgumentParser is the class name
     parser.add_argument(dest='prb_nme',help="Name of the problem file")
     parser.add_argument(dest='alpha',help="Alpha value",type=float)
     parser.add_argument(dest='min_conf',help="Minimum Confidence",type=float)
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     min_m = 0 #no. of  minimum parity constraints is 0
     if max_m < 0:
         max_m = prb.n #max no. of parity constraints is the no. of variables in the problem
-     Until here!! '''
+     Until here!! ''' 
 
 
 
@@ -63,12 +63,12 @@ if __name__ == '__main__':
         for t in range(1,T):
             
             	m=i
-            	f=2 #just for now
+            	f=10 #just for now
             	prb.hashfnc_generate(m, f)  #hash functions generated
             
-            	outcome = prb.solver()
+            	sh = prb.solver()
 
-            	sh = outcome  #simple assignment of one value to another variable
+            	#sh = outcome  #simple assignment of one value to another variable
             	if sh != 0:
                		if sh == True:           
                     		w.append(1)
@@ -77,9 +77,11 @@ if __name__ == '__main__':
             	else:
                 	print("No results")
        		med = median(w)
-		print(i)
+
+		print("Median"+str(med)) #
+
         	if med < 1:
-	    		print("Problem zone!")		
+	   		print("Median is less than one")
             		break
     	i=i+1
     

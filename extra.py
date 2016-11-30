@@ -86,8 +86,8 @@ class SAT:
 
         self.clauses = []
         self.hashfnc = []
-        #self.max_Xor = -1 ''' Set this to non-zero value to limit the maximum length of xor constraints
-                              #If this length is exceeded, xor will be broken up into separate clauses'''
+        self.max_Xor = -1 # Set this to non-zero value to limit the maximum length of xor constraints
+                             # If this length is exceeded, xor will be broken up into separate clauses 
         self.newVar = 0
 
 
@@ -111,7 +111,7 @@ class SAT:
         self.hashfncs = []
         self.newVar = 0
 
-        self.max_Xor = -1
+        
 
         cur_indx = self.n + 1
 
@@ -132,6 +132,8 @@ class SAT:
                             self.newVar += 1
                             self.hashfncs.append(temp)
                     self.hashfncs.append(newfnc)
+	
+	#print("hashfnc= "+str(self.hashfncs));
 
         print("Generated " + str(m) + " XOR constraints")
         if self.max_Xor > 0:
@@ -150,27 +152,31 @@ class SAT:
         if not os.path.isdir("tmp"):
             os.mkdir("tmp")
         filename = "tmp/SAT_test.cnf"    #SAT_test.cnf needs to be made dynamic
-        ofstream = open(filename, "w")
-        ofstream.write("p cnf " + str(self.n + self.newVar) + " " + str(len(self.clauses) + len(self.hashfnc)) + "\n")
+        ofstream = open(filename, "w")   # 'w' creates the file if it doesnt exist, or empties it if it exists
+        ofstream.write("p cnf " + str(self.n + self.newVar) + " " + str(len(self.clauses) + len(self.hashfncs)) + "\n")
 
 
         for item in self.clauses:
             ofstream.write(item + "\n")
+	    #ofstream.write("items = "+str(self.clauses))
         for now_hashfnc in self.hashfncs:
-            ofstream.write("x")
+            #ofstream.write("x")
             for item in now_hashfnc:
                 ofstream.write(str(item) + " ")
             ofstream.write("0\n")
         ofstream.close()
-        solver = Command(['./cryptominisat5', '--verb 0', filename]) #'--gaussuntil=400', '--threads=1',
+	
+        solver = Command(['./cryptominisat5', ' --verb=0 ', filename]) #'--gaussuntil=400', '--threads=1',
         result = solver.run()
-        run_command(['rm', filename])       #check
+	#here result is 0 so no output
+        #run_command(['rm', filename])       #just to remove the intermediate file
         if not result:
             return 0
         else:
             result = result.split()
             if len(result) >= 2:
                 outcome = result[1]
+		print("Result = "+str(outcome))
                 if outcome == 'SATISFIABLE':
                     return True
                 elif outcome == 'UNSATISFIABLE':

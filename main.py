@@ -63,12 +63,12 @@ if __name__ == '__main__':
         for t in range(1,T):
             
             	m=i
-            	f=2 #just for now
+            	f=10 #just for now
             	prb.hashfnc_generate(m, f)  #hash functions generated
             
-            	outcome = prb.solver()
+            	sh = prb.solver()
 
-            	sh = outcome  #simple assignment of one value to another variable
+            	#sh = outcome  #simple assignment of one value to another variable
             	if sh != 0:
                		if sh == True:           
                     		w.append(1)
@@ -77,10 +77,13 @@ if __name__ == '__main__':
             	else:
                 	print("No results")
        		med = median(w)
+
+		print("Median"+str(med)) #
+
         	if med < 1:
 	   		print("Median is less than one")
             		break
-    	i=i+1
+    i=i+1
     
     result = math.pow(2,i-1)
     print("The result is " + str(result))
