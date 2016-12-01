@@ -83,7 +83,7 @@ if __name__ == '__main__':
         	if med < 1:
 	   		print("Median is less than one")
             		break
-    i=i+1
+    	i=i+1
     
     result = math.pow(2,i-1)
     print("The result is " + str(result))
