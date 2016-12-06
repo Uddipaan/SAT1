@@ -40,11 +40,7 @@ if __name__ == '__main__':
     prb = SAT(prb_nme)
 
 
-    ''' I dont see the below code's usefullness!! :-( 
-    min_m = 0 #no. of  minimum parity constraints is 0
-    if max_m < 0:
-        max_m = prb.n #max no. of parity constraints is the no. of variables in the problem
-     Until here!! ''' 
+    
 
 
 
@@ -63,25 +59,24 @@ if __name__ == '__main__':
         for t in range(1,T):
             
             	m=i
-            	f=10 #just for now
-            	#prb.hashfnc_generate(m, f)  #hash functions generated
-            
-
+            	
 
 		if not os.path.isdir("tmp"):
             		os.mkdir("tmp")
 		
 
 		finalFile= "tmp/SAT_test.cnf"
+		
 		prb.addHash(prb_nme, finalFile, m)
 
+		
+		if not finalFile:
+            		print("FILE IS NOT CREATED!!")
+		else:
+			sh = prb.solver(finalFile)
 
 
-            	sh = solver(finalFile)
-
-
-
-
+		
 
 		
             	#sh = outcome  #simple assignment of one value to another variable
@@ -94,9 +89,9 @@ if __name__ == '__main__':
                 	print("No results")
        		med = median(w)
 
-		#med=2 done only for testing
+		
 
-		print("Median"+str(med)) #test
+		
 		
 		
         	if med < 1:
@@ -106,3 +101,4 @@ if __name__ == '__main__':
     
     result = math.pow(2,i-1)
     print("The result is " + str(result))
+    #os.system('rm '+finalFile)  only do when it is final
