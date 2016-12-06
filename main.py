@@ -64,10 +64,26 @@ if __name__ == '__main__':
             
             	m=i
             	f=10 #just for now
-            	prb.hashfnc_generate(m, f)  #hash functions generated
+            	#prb.hashfnc_generate(m, f)  #hash functions generated
             
-            	sh = prb.solver()
 
+
+		if not os.path.isdir("tmp"):
+            		os.mkdir("tmp")
+		
+
+		finalFile= "tmp/SAT_test.cnf"
+		prb.addHash(prb_nme, finalFile, m)
+
+
+
+            	sh = prb.solver(finalFile)
+
+
+
+
+
+		
             	#sh = outcome  #simple assignment of one value to another variable
             	if sh != 0:
                		if sh == True:           
@@ -78,8 +94,11 @@ if __name__ == '__main__':
                 	print("No results")
        		med = median(w)
 
-		print("Median"+str(med)) #
+		#med=2 done only for testing
 
+		print("Median"+str(med)) #test
+		
+		
         	if med < 1:
 	   		print("Median is less than one")
             		break

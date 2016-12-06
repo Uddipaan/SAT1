@@ -9,6 +9,10 @@ __author__ = 'uddipaan'
 import subprocess, threading
 import random
 import os
+import sys
+import math
+import re
+import time
 
 
 #to execute the run_command in solver
@@ -105,83 +109,101 @@ class SAT:
 
     
 
-    def hashfnc_generate(self,m,f):
-
-        
-        self.hashfncs = []
-        self.newVar = 0
-
         
 
-        cur_indx = self.n + 1
+    
 
-        for i in range(0,m):
-            newfnc = []
+    def addHash(self,initialFileName,finalFileName,m):			#numVariables=n numClauses=no_of_clauses
+         numHash = m
+    	 hashClauses = ''
+    	 for i in range(int(numHash)):
+        	varNum = 0
+        	randBits = self.findHashBits(numHash)#removed arg of no of var since object is invoked which can utilised all its attributes
+        	hashClauses = hashClauses+'x'
+        	needToNegate = False
+        	if (randBits[0] == '1'):
+            		needToNegate = True
+        	for j in range(1, self.n+1):
+            		if (randBits[j] == '1'):
+                		varNum = varNum+1
+                		if (needToNegate):
+                    			hashClauses = hashClauses+'-'
+                    			needToNegate = False
+                		hashClauses = hashClauses+str(j)+' '
+        	hashClauses = hashClauses+' 0\n'
+    	 f = open(initialFileName,'r')
+    	 lines = f.readlines()
+    	 f.close()
+	 
 
-            for X in range(1, self.n + 1):
-                if random.random() < f:
-                    newfnc.append(X)
-                if random.randint(0,1) == 0:
-                    newfnc[0] = -newfnc[0]
-                    if self.max_Xor > 0:
-                        while len(newfnc) > self.max_Xor:
-                            temp = newfnc[0:self.max_Xor - 1]
-                            newfnc = [cur_indx] + newfnc[self.max_Xor - 1:]
-                            temp.append(cur_indx)
-                            cur_indx += 1
-                            self.newVar += 1
-                            self.hashfncs.append(temp)
-                    self.hashfncs.append(newfnc)
+	 
+	 
+    	 f = open(finalFileName,'w')
+   	 f.write('p cnf '+str(self.n)+' '+str(self.no_of_clauses+numHash)+'\n')
+    	 for line in lines:
+        	f.write(str(line.strip())+'\n')
+    	 if (numHash > 0):
+        	f.write(hashClauses)
+    	 f.close()
+
+		
+
+
+    def findHashBits(self,numHash):
+	no_of_var=self.n
+	binLen=no_of_var + 2*numHash
+	randBitsTotal = self.getBinary(binLen)
+    	randBits=''
+	print("randBitsTotal= "+str(randBitsTotal))
+    	for i in range(self.n+1):
+        	xorResult = 0
+        	for j in range(numHash):
+			print("randBitsTotal[i+j]= "+str(randBitsTotal[i+j]))
+            		xorResult = xorResult^int(randBitsTotal[i+j])
+			
+        	randBits += str(xorResult)
+    	return randBits
+
+
+
+    def getBinary(self,binLen):
+	byteLen = 1+binLen/8
+    	_random_source = open("/dev/urandom","rb")
+    	randBytes = _random_source.read(byteLen)
+    	_random_source.close()
+
+    	randInt = int(randBytes.encode("hex"),16)
+    	randBin = bin(randInt).zfill(binLen)
+    	return randBin[:binLen]
+
+
+
+
+
+
+
+    def solver(self,finalFile):
 	
-	#print("hashfnc= "+str(self.hashfncs));
+	outputFileName = "tmp/file with var :"+str(self.n)+".cnf"
+	cmd="./cryptominisat5  --verb=0 "+str(finalFile)+" > "+str(outputFileName)
+	os.system(cmd)
+	f = open(outputFileName,'r')
+    	lines = f.readlines()
+    	f.close() 
+	#os.system('rm '+outputFileName)     can only be done after tested once
+	res = lines[0]
+	res_new = res.split()
 
-        print("Generated " + str(m) + " XOR constraints")
-        if self.max_Xor > 0:
-            print("Max Xor length is " + str(self.max_Xor) + ". Added " + str(self.newVar)+ "new variables!")
-        
-
-
-
-
-
-
-
-    def solver(self):
-
-        
-        if not os.path.isdir("tmp"):
-            os.mkdir("tmp")
-        filename = "tmp/SAT_test.cnf"    #SAT_test.cnf needs to be made dynamic
-        ofstream = open(filename, "w")   # 'w' creates the file if it doesnt exist, or empties it if it exists
-        ofstream.write("p cnf " + str(self.n + self.newVar) + " " + str(len(self.clauses) + len(self.hashfncs)) + "\n")
-
-
-        for item in self.clauses:
-            ofstream.write(item + "\n")
-	    #ofstream.write("items = "+str(self.clauses))
-        for now_hashfnc in self.hashfncs:
-            #ofstream.write("x")
-            for item in now_hashfnc:
-                ofstream.write(str(item) + " ")
-            ofstream.write("0\n")
-        ofstream.close()
+	#print res_new[1]	 useless 
+	 
 	
-        solver = Command(['./cryptominisat5', ' --verb=0 ', filename]) #'--gaussuntil=400', '--threads=1',
-        result = solver.run()
-	#here result is 0 so no output
-        #run_command(['rm', filename])       #just to remove the intermediate file
-        if not result:
-            return 0
-        else:
-            result = result.split()
-            if len(result) >= 2:
-                outcome = result[1]
-		print("Result = "+str(outcome))
-                if outcome == 'SATISFIABLE':
+	if not res_new:
+		return 0
+	else:
+		if res_new[1] == 'SATISFIABLE':
                     return True
-                elif outcome == 'UNSATISFIABLE':
+                elif res_new[1] == 'UNSATISFIABLE':
                     return False
-        
 
 
 
@@ -189,6 +211,10 @@ class SAT:
 
 
 
+
+
+
+    
 def median(w):
 
     if not w:    
@@ -201,10 +227,5 @@ def median(w):
             return int((srt[ leng / 2 ] + srt[ leng / 2 - 1]) / 2.0 )   # // is used in newer versions of python
         return int(srt[ leng / 2 ] )
         
-
-
-
-
-
 
 
