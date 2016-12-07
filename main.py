@@ -51,53 +51,34 @@ if __name__ == '__main__':
     Q = (((ln(1/delta))/alpha)*ln(prb.n))
     T = int(ceiling(Q))
     
-    w = []
+    print "The Value of T= "+str(T)
+    
     
     i=0
-    while (i <= prb.n) :   
+    while (i <= prb.n) :  
+	w=[] 
         for t in range(1,T):
-            
-            	m=i
-            	
-
-		if not os.path.isdir("tmp"):
+		
+                m=i
+            	if not os.path.isdir("tmp"):
             		os.mkdir("tmp")
-		
-
 		finalFile= "tmp/SAT_test.cnf"
-		
 		prb.addHash(prb_nme, finalFile, m)
-
-		
-		if not finalFile:
-            		print("FILE IS NOT CREATED!!")
-		else:
-			sh = prb.solver(finalFile)
-
-
-		
-
-		
-            	#sh = outcome  #simple assignment of one value to another variable
-            	if sh != 0:
+		sh = prb.solver(finalFile)
+		if sh != 0:
                		if sh == True:           
                     		w.append(1)
                 	else:
                     		w.append(0)
             	else:
-                	print("No results")
-       		med = median(w)
-
-		
-
-		
-		
-		
-        	if med < 1:
-	   		print("Median is less than one")
-            		break
+                	print("No results for i= "+str(i)+" and t= "+str(t))
+       	med = median(w)
+	if med < 1:
+	   	print("Median is less than one")
+            	break
     	i=i+1
     
+    
     result = math.pow(2,i-1)
-    print("The result is " + str(result))
-    #os.system('rm '+finalFile)  only do when it is final
+    print("The result is " + str(math.floor(result)))
+    os.system('rm '+finalFile)  

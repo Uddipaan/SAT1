@@ -57,12 +57,7 @@ class SAT:
     
 
     def addHash(self,initialFileName,finalFileName,m):			#numVariables=n numClauses=no_of_clauses
-         
-
-	 
-	 
-
-	 numHash = m
+         numHash = m
     	 hashClauses = ''
     	 for i in range(int(numHash)):
 		        	
@@ -85,13 +80,7 @@ class SAT:
     	 f = open(initialFileName,'r')
     	 lines = f.readlines()
     	 f.close()
-	 
-	 
-	
-	 
-	
-	 
-    	 f = open(finalFileName,'w')
+	 f = open(finalFileName,'w')
    	 f.write('p cnf '+str(self.n)+' '+str(self.no_of_clauses+numHash)+'\n')
 	 
     	 for line in lines:

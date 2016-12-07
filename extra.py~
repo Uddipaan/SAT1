@@ -57,18 +57,13 @@ class SAT:
     
 
     def addHash(self,initialFileName,finalFileName,m):			#numVariables=n numClauses=no_of_clauses
-         
-
-	 
-	 
-
-	 numHash = m
+         numHash = m
     	 hashClauses = ''
     	 for i in range(int(numHash)):
 		        	
 		varNum = 0
         	randBits = self.findHashBits(numHash)#removed arg of no of var since object is invoked which can utilised all its attributes
-        	hashClauses = hashClauses+'x'
+        	hashClauses = hashClauses#+'x'
         	needToNegate = False
         	if (randBits[0] == '1'):
             		needToNegate = True
@@ -85,13 +80,7 @@ class SAT:
     	 f = open(initialFileName,'r')
     	 lines = f.readlines()
     	 f.close()
-	 
-	 
-	
-	 
-	
-	 
-    	 f = open(finalFileName,'w')
+	 f = open(finalFileName,'w')
    	 f.write('p cnf '+str(self.n)+' '+str(self.no_of_clauses+numHash)+'\n')
 	 
     	 for line in lines:
@@ -147,7 +136,7 @@ class SAT:
 	f = open(outputFileName,'r')
     	lines = f.readlines()
     	f.close() 
-	os.system('rm '+outputFileName)     can only be done after tested once
+	os.system('rm '+outputFileName)     
 	res = lines[0]
 	res_new = res.split()
 
