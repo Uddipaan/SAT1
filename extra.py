@@ -33,7 +33,7 @@ class SAT:
 
         self.clauses = []
         self.hashfnc = []
-        self.max_Xor = -1 # Set this to non-zero value to limit the maximum length of xor constraints
+        self.max_Xor = -1    # Set this to non-zero value to limit the maximum length of xor constraints
                              # If this length is exceeded, xor will be broken up into separate clauses 
         self.newVar = 0
 
@@ -94,7 +94,7 @@ class SAT:
 
     def findHashBits(self,numHash):
 	no_of_var=self.n
-	binLen=no_of_var + 2*numHash
+	binLen=no_of_var + 2*numHash    #maybe for short; binLen = math.log(numHash)
 	randBitsTotal = self.getBinary(binLen)
     	randBits=''
 	
@@ -150,15 +150,6 @@ class SAT:
                     return True
                 elif res_new[1] == 'UNSATISFIABLE':
                     return False
-
-
-
-
-
-
-
-
-
 
     
 def median(w):

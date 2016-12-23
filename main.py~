@@ -1,18 +1,12 @@
 __author__ = 'uddipaan'
 
-
-
-
-
-
-
 import math   #(for python less than or equal to version 2, use this import part)
 import sys
 import argparse     #argparser is a library
+import time
+
 
 from extra import *
-
-
 
 #Usage
 #parameter 1: Name of the problem file
@@ -39,11 +33,7 @@ if __name__ == '__main__':
     prb = SAT(prb_nme)
 
 
-    
-
-
-
-    
+    start_time = time.time()
     ln = math.log
     sqrt = math.sqrt
     ceiling = math.ceil
@@ -58,7 +48,7 @@ if __name__ == '__main__':
     while (i <= prb.n) :  
 	w=[] 
         for t in range(1,T):
-		w = []
+		
                 m=i
             	if not os.path.isdir("tmp"):
             		os.mkdir("tmp")
@@ -79,6 +69,8 @@ if __name__ == '__main__':
     	i=i+1
     
     
-    result = math.pow(2,i-1)
-    print("The result is " + str(math.floor(result)))
+    result = math.pow(2,i-1) 
+    print("--- %s seconds ---" % (time.time() - start_time))
+    print("For a CNF formula with "+str(prb.n)+" variables and "+str(prb.no_of_clauses)+" clauses with given tolerance = "+str(alpha)+" and minimum confidence = "+str(delta)+" we have, ")
+    print("The result is " + str(math.floor(result))+" (^_^)")
     os.system('rm '+finalFile)  
