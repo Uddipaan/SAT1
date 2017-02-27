@@ -71,6 +71,6 @@ if __name__ == '__main__':
     
     result = math.pow(2,i-1) 
     print("time taken: %s seconds" % (time.time() - start_time))
-    print("For a CNF formula with "+str(prb.n)+" variables and "+str(prb.no_of_clauses)+" clauses with given tolerance = "+str(alpha)+" and minimum confidence = "+str(delta)+" we have, ")
-    print("The result is " + str(math.floor(result))+" (^_^)")
+    print("For a CNF formula with "+str(prb.n)+" variables and "+str(prb.no_of_clauses)+" clauses with given tolerance = "+str(alpha)+" and minimum confidence = "+str(min_conf)+" we have, ")
+    print("The result is " + str(math.floor(result)))
     os.system('rm '+finalFile)  

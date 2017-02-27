@@ -1,24 +1,10 @@
 __author__ = 'uddipaan'
 
-
-'''REVISIONS!!!'''
-
-# test cnf file generated during solver is need to be made dynamic named.
-# not quite sure if instance_id is needed or any time is needed
-
-import subprocess, threading
 import random
 import os
 import sys
 import math
 import re
-import time
-
-
-
-
-
-
 
 class SAT:
     def __init__(self,prb_nme):
@@ -38,7 +24,7 @@ class SAT:
         self.newVar = 0
 
 
-                    #NEED TO MAKE MECHANISM TO IGNORE 'C'->LEAST PRIORITY
+                    
                     
         while True:
             curline = file_stream.readline()
@@ -47,7 +33,7 @@ class SAT:
             self.clauses.append(curline.strip())
             self.no_of_clauses = len(self.clauses)
 
-        print("There are " + str(self.n) + "variables and " + str(self.no_of_clauses) + "clauses")
+        print("There are "+str(self.n)+" variables and "+str(self.no_of_clauses)+" clauses")
 
 
     
@@ -94,7 +80,7 @@ class SAT:
 
     def findHashBits(self,numHash):
 	no_of_var=self.n
-	binLen=no_of_var + 2*numHash    #maybe for short; binLen = math.log(numHash)
+	binLen=no_of_var + 2*numHash    #maybe for short; binLen = math.log(numHash)	
 	randBitsTotal = self.getBinary(binLen)
     	randBits=''
 	
@@ -140,7 +126,6 @@ class SAT:
 	res = lines[0]
 	res_new = res.split()
 
-	#print res_new[1]	 useless 
 	 
 	
 	if not res_new:
