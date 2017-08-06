@@ -36,9 +36,6 @@ class SAT:
         print("There are "+str(self.n)+" variables and "+str(self.no_of_clauses)+" clauses")
 
 
-    
-
-        
 
     
 
@@ -48,7 +45,7 @@ class SAT:
     	 for i in range(int(numHash)):
 		        	
 		varNum = 0
-        	randBits = self.findHashBits(numHash)#removed arg of no of var since object is invoked which can utilised all its attributes
+        	randBits = self.findHashBits(numHash) #findhashbits function is going to execute the hasher.
         	hashClauses = hashClauses+'x'
         	needToNegate = False
         	if (randBits[0] == '1'):
@@ -78,9 +75,16 @@ class SAT:
 		
 
 
+
+
+
+
+
+#change is needed from here ..........
+
     def findHashBits(self,numHash):
 	no_of_var=self.n
-	binLen=no_of_var + 2*numHash    #maybe for short; binLen = math.log(numHash)	
+	binLen=no_of_var + 2 * numHash    	
 	randBitsTotal = self.getBinary(binLen)
     	randBits=''
 	
@@ -104,6 +108,15 @@ class SAT:
     	randInt = int(randBytes.encode("hex"),16)
     	randBin = format(randInt, 'b').zfill(binLen)
     	return randBin[:binLen]
+
+
+#................till here
+
+
+
+
+
+
 
 
 

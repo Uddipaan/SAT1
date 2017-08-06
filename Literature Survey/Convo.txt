@@ -1,0 +1,53 @@
+Suppose clausNum = 2
+Suppose independentSet.size = 3
+This means I need to generate two (clausNum) XOR clauses, each of which will be obtained by XOR-ing a subset of 3 (independentSet.size) variables and a randomly chosen 0/1
+Suppose independentSet = {x1, x2, x5}
+One XOR clause could look like x1 XOR x5 XOR 1
+Another XOR clause could look like x2 XOR x5 XOR 0
+Yet another XOR clause could look like x1 XOR x2 XOR x3
+XOR 0
+To generate an XOR clause on 3 independent variables, we need 3 + 1 coin tosses
+Suppose my coin tosses are H T T H
+Then the XOR clause will be x1 XOR 1
+First H means include x1
+Second T means exclude x2
+Third T means exclude x5
+Fourth H means include 1
+So we get x1 XOR 1
+If the coin tosses were THHH, then the XOR clause would be x2 XOR x5 XOR 1
+To generate 1 XOR clause, we need independentSet.size + 1 coin toss outcomes
+To generate clausNum XOR clauses, we need (independentSet.size + 1)*clausNum coin toss outcomes
+This is the long XOR case
+For the short XOR case, we need to generate coin toss outcomes   (say clausNum = 2 and independentSet.size = 3)
+H (prob f1)  T (prof 1-f1)  T (prob 1-f1)  H (prob f1)   --- done for 1st XOR clause
+T (prob 1-f2)  H (prob f2) T (prob 1- f2)  T (prob 1-f2) -- done for 2nd XOR clause
+https://arxiv.org/pdf/1512.08863.pdf
+H T T H
+T H T T
+# rows = m
+# cols = n
+H T T
+T H T
+using a biased coin with Pr ( H ) = f
+And generate the last col with Pr( H ) = 0.5
+A is obtained using a biased coin (prob of H is f)
+H T T
+T H T
+b is obtained using an unbiased coin (prob of H is 0.5):
+H
+T
+x is (x1 x2 x5)
+Then Ax + b mod 2 is:
+x1 XOR 1
+x2 XOR 0
+H^{f_i}_{i \times n}
+H^{f_1}_{1 \times n}
+So f is f_1 and m is 1
+in H^f_{m \times n}
+H^{f_1}_{1 \times n} means we are generating one XOR clause by choosing a subset of n variables using a biased coin with Pr( H ) = f_1
+H^{f_2}_{2 \times n} means we are generating two XOR clause by choosing a subset of n variables using a biased coin with Pr( H ) = f_2
+H^{f_3}_{3 \times n} means we are generating three XOR clauses by choosing a subset of n variables using a biased coin with Pr( H ) = f_3
+
+
+
+https://stackoverflow.com/questions/24417198/proper-boolean-random-generator-bernoulli-distribution

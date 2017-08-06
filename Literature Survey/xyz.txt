@@ -1,0 +1,71 @@
+ApproxMC called in line 1215  to generate the solution count
+
+ApproxMC(solver, resLog)
+
+
+ApproxMC is a function of structure SATCount defined as
+
+struct SATCount {
+        uint32_t hashCount;
+        uint32_t cellSolCount;
+    };
+	
+
+	
+	
+	
+	
+//approxMC module
+
+	
+SATCount Main::ApproxMC(Solver &solver, FILE* resLog) {
+	uint32_t  hashCount = 0;
+	vec<Lit> assumptions;
+    SATCount solCount;
+    solCount.cellSolCount = 0;
+    solCount.hashCount = 0;
+	std::map<int,Lit> hashVars;
+	//hashvars = number of XOR clauses we have generated but not yet conjunted,
+    //assumptions = something already conjuncted from the variables in the cnf.
+	SetHash(hashCount, hashVars, solver,assumptions);
+	
+	
+//sethash module
+	
+bool Main::SetHash(uint32_t clausNum, std::map<int,Lit> &hashAssumptionVars, Solver &s, vec<Lit> &assumptions){
+	if (clausNum > hashAssumptionVars.size())    //relevant
+    {
+      return AddHash(clausNum-hashAssumptionVars.size(),hashAssumptionVars,s,assumptions);
+    }
+    }
+   return true;
+}
+	
+	1. hashCount = clausNum
+	2. hashVars = hashAssumptionVars
+	
+	
+//Addhash module
+	
+bool Main::AddHash(uint32_t clausNum, std::map<int,Lit> &hashAssumptionVars,Solver &s, vec<Lit> &assumptions)
+	{
+		string randomBits;
+		GenerateRandomBits(randomBits, (s.independentSet.size() + 1) * clausNum);
+		
+	}
+	
+	
+//independentSet = set of independent variables
+	
+	
+//GenerateRandomBits module
+	
+bool Main::GenerateRandomBits(string &randomBits, uint32_t size) {
+    std::uniform_int_distribution<int> uid{0, 2147483647};
+    uint32_t i = 0;
+    while (i < size) {
+        i += 31;
+        randomBits += binary(uid(rd), 31);
+    }
+    return true;
+}

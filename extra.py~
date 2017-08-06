@@ -33,12 +33,9 @@ class SAT:
             self.clauses.append(curline.strip())
             self.no_of_clauses = len(self.clauses)
 
-        print("There are "+self.n+" variables and "+self.no_of_clauses+" clauses")
+        print("There are "+str(self.n)+" variables and "+str(self.no_of_clauses)+" clauses")
 
 
-    
-
-        
 
     
 
@@ -80,7 +77,7 @@ class SAT:
 
     def findHashBits(self,numHash):
 	no_of_var=self.n
-	binLen=no_of_var + 2*numHash    #maybe for short; binLen = math.log(numHash)	
+	binLen=no_of_var + 2 * numHash    #maybe for short; binLen = math.log(numHash)	
 	randBitsTotal = self.getBinary(binLen)
     	randBits=''
 	
