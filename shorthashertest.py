@@ -18,9 +18,9 @@ def getUnbiasedBits():
 
 
 cls = input('Enter the number of clauses\n')
-print '# clauses: ',cls
+print '# of clauses: ',cls
 indie = input('Enter the number of independent set\n')
-print '# independent sets: ',indie 
+print '# of independent sets: ',indie 
 f = input('enter the probability of getting 1\n')
 print 'prob(1) = ',f
 
@@ -46,11 +46,26 @@ print('A is: \n')
 
 print A			#A is giving a matrix of Biased bits based on some prob 'f'(1 or 0)
 
-print('\n\n')
+print('\n')
 print('b is: \n')
 
 print b			#b is giving us a matrix of unbiased bits(1 or 0)
 
+
+merged_matrix = [[0 for x in range(indie+1)] for y in range(cls)]
+
+
+
+for i in range(cls):
+	for j in range(indie):
+		merged_matrix[i][j]=A[i][j]
+
+for j in range(cls):
+	merged_matrix[j][indie]=b[j]
+
+print('\n')
+
+print merged_matrix
+
 #work left is: 
-	# to merge the matrices A and b
 	# to merge this hasher with the original program
